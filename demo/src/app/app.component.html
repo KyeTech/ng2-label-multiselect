@@ -1,1 +1,2 @@
-<label-multiselect [(ngModel)]="model"></label-multiselect>
+<label-multiselect [(ngModel)]="model" [multiselectItems]="items" [disabled]="disabled" (ngModelChange)="change($event)"></label-multiselect>
+<p>Some text underneath</p>
