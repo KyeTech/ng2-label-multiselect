@@ -11,7 +11,9 @@ export class AppComponent {
 
   public config: ILabelMultiselectConfig = {
     noOptionsPlaceholder: 'No options text.',
-    disabledEmptyPlaceholder: 'Disabled and empty!'
+    disabledEmptyPlaceholder: 'Disabled and empty!',
+    inputClasses: ['rounded-right-side'],
+    labelClasses: ['abc']
   };
 
   public model = [{

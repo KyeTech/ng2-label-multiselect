@@ -6,13 +6,13 @@ import { LabelMultiselectConfig } from '../models';
 
 @Component({
     selector: 'label-multiselect[ngModel]',
-    template: ` <div class="label-multiselect-outer-container">
-                    <div class="label-multiselect-container" (click)="containerClick($event)" [ngClass]="{ 'label-multiselect-disabled' : disabled }">
+    template: ` <div class="label-multiselect-outer-container" [ngClass]="{ 'label-multiselect-disabled' : this.disabled }">
+                    <div class="label-multiselect-container" [style.min-height]="config.minHeight + 'px'" (click)="containerClick($event)" [ngClass]="config.inputClasses">
                         <ul class="label-multiselect-selection">
-                            <li *ngIf="disabled && selectedItems.length === 0" class="label-multiselect-disabled-placeholder">
+                            <li *ngIf="disabled && selectedItems.length === 0" class="label-multiselect-disabled-placeholder" [ngClass]="config.disabledEmptyClasses">
                                 {{config.disabledEmptyPlaceholder}}
                             </li>
-                            <li *ngFor="let opt of selectedItems" class="label-multiselect-label">
+                            <li *ngFor="let opt of selectedItems" class="label-multiselect-label" [ngClass]="config.labelClasses">
                                 <span class="label-multiselect-label-cross" (click)="remove(opt)">×</span>
                                 {{opt.label}}
                             </li>
@@ -22,20 +22,18 @@ import { LabelMultiselectConfig } from '../models';
                         </ul>
                     </div>
                     <ul class="label-multiselect-dropdown" [ngClass]="{ 'visible' : showDropdown && !disabled }">
-                        <li *ngFor="let opt of filteredMultiselectItems" (click)="add(opt)" class="label-multiselect-dropdown-option">
+                        <li *ngFor="let opt of filteredMultiselectItems" (click)="add(opt)" class="label-multiselect-dropdown-option" [ngClass]="config.dropdownItemClasses">
                             {{opt.label}}
                         </li>
-                        <li *ngIf="multiselectItems.length === 0" class="label-multiselect-no-options">{{config.noOptionsPlaceholder}}</li>
+                        <li *ngIf="multiselectItems.length === 0" class="label-multiselect-no-options" [ngClass]="config.noOptionsClasses">{{config.noOptionsPlaceholder}}</li>
                     </ul>
                 </div>`,
     styles: [
         `.label-multiselect-outer-container {
-            position: relative;
-            font-family: sans-serif; }`,
+            position: relative; }`,
 
         `.label-multiselect-container {
             border: 1px solid #ccc;
-            min-height: 28px;
             cursor: text; }`,
 
         `.label-multiselect-selection {
@@ -51,7 +49,6 @@ import { LabelMultiselectConfig } from '../models';
             border: 1px solid #ccc;
             border-radius: 5px;
             margin-top: 4px;
-            font-size: 10pt;
             margin-bottom: 2px;
             margin-left: 5px;
             cursor: pointer; }`,
@@ -94,7 +91,6 @@ import { LabelMultiselectConfig } from '../models';
         `.label-multiselect-dropdown-option {
             padding-left: 5px;
             padding-top: 5px;
-            font-size: 10pt;
             padding-bottom: 5px;
             cursor: pointer; }`,
 
@@ -110,7 +106,6 @@ import { LabelMultiselectConfig } from '../models';
             background-color: #eee; }`,
 
         `.label-multiselect-disabled-placeholder {
-            font-size: 11pt;
             margin-top: 6px;
             margin-left: 6px; }`
     ]
@@ -227,6 +222,11 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
         let opts = this.multiselectConfig;
         if (opts != null) {
 
+            // minHeight
+            if (opts.minHeight != null) {
+                this.config.minHeight = opts.minHeight;
+            }
+
             // disabledEmptyPlaceholder
             if (opts.disabledEmptyPlaceholder != null) {
                 this.config.disabledEmptyPlaceholder = opts.disabledEmptyPlaceholder;
@@ -235,6 +235,31 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
             // noOptionsPlaceholder
             if (opts.noOptionsPlaceholder != null) {
                 this.config.noOptionsPlaceholder = opts.noOptionsPlaceholder;
+            }
+
+            // inputClasses
+            if (opts.inputClasses != null) {
+                this.config.inputClasses = opts.inputClasses;
+            }
+
+            // disabledEmptyClasses
+            if (opts.disabledEmptyClasses != null) {
+                this.config.disabledEmptyClasses = opts.disabledEmptyClasses;
+            }
+
+            // dropdownItemClasses
+            if (opts.dropdownItemClasses != null) {
+                this.config.dropdownItemClasses = opts.dropdownItemClasses;
+            }
+
+            // noOptionsClasses
+            if (opts.noOptionsClasses != null) {
+                this.config.noOptionsClasses = opts.noOptionsClasses;
+            }
+
+            // labelClasses
+            if (opts.labelClasses != null) {
+                this.config.labelClasses = opts.labelClasses;
             }
         }
     }

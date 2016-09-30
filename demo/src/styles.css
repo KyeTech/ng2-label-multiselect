@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+.tiny-text {
+    font-size: 5pt !important;
+}
+
+.rounded-right-side {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
