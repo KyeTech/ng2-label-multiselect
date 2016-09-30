@@ -1,3 +1,4 @@
 export interface ILabelMultiselectConfig {
-    allSelected?: boolean;
+    disabledEmptyPlaceholder?: string;
+    noOptionsPlaceholder?: string;
 }

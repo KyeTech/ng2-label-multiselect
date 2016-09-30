@@ -1,11 +1,19 @@
 import { Component } from '@angular/core';
 
+import { ILabelMultiselectConfig } from 'ng2-label-multiselect';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  public config: ILabelMultiselectConfig = {
+    noOptionsPlaceholder: 'No options text.',
+    disabledEmptyPlaceholder: 'Disabled and empty!'
+  };
+
   public model = [{
     id: 1,
     label: 'Testing'
@@ -54,7 +62,7 @@ export class AppComponent {
     }
   ];
 
-  public disabled = false;
+  public disabled = true;
 
   public change(event: any) {
     console.log(event);

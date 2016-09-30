@@ -9,6 +9,9 @@ import { LabelMultiselectConfig } from '../models';
     template: ` <div class="label-multiselect-outer-container">
                     <div class="label-multiselect-container" (click)="containerClick($event)" [ngClass]="{ 'label-multiselect-disabled' : disabled }">
                         <ul class="label-multiselect-selection">
+                            <li *ngIf="disabled && selectedItems.length === 0" class="label-multiselect-disabled-placeholder">
+                                {{config.disabledEmptyPlaceholder}}
+                            </li>
                             <li *ngFor="let opt of selectedItems" class="label-multiselect-label">
                                 <span class="label-multiselect-label-cross" (click)="remove(opt)">×</span>
                                 {{opt.label}}
@@ -18,11 +21,11 @@ import { LabelMultiselectConfig } from '../models';
                             </li>
                         </ul>
                     </div>
-                    <ul class="label-multiselect-dropdown" [ngClass]="{ 'visible' : showDropdown }">
+                    <ul class="label-multiselect-dropdown" [ngClass]="{ 'visible' : showDropdown && !disabled }">
                         <li *ngFor="let opt of filteredMultiselectItems" (click)="add(opt)" class="label-multiselect-dropdown-option">
                             {{opt.label}}
                         </li>
-                        <li *ngIf="multiselectItems.length === 0" class="label-multiselect-no-options">No options available.</li>
+                        <li *ngIf="multiselectItems.length === 0" class="label-multiselect-no-options">{{config.noOptionsPlaceholder}}</li>
                     </ul>
                 </div>`,
     styles: [
@@ -104,7 +107,12 @@ import { LabelMultiselectConfig } from '../models';
             background-color: #5bc0de; }`,
 
         `.label-multiselect-disabled {
-            background-color: #eee; }`
+            background-color: #eee; }`,
+
+        `.label-multiselect-disabled-placeholder {
+            font-size: 11pt;
+            margin-top: 6px;
+            margin-left: 6px; }`
     ]
 })
 export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
@@ -147,13 +155,15 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
     constructor(@Self() cd: NgModel) {
         this.cd = cd;
         cd.valueAccessor = this;
-
         this.cd.viewModel = [];
+
         this.config = new LabelMultiselectConfig();
 
         this.showDropdown = false;
 
         this.selectedItems = [];
+
+        this.multiselectItems = [];
 
         this.filterText = '';
 
@@ -162,6 +172,7 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
 
     ngOnInit() {
         this.selectedItems = this.cd.viewModel;
+        this._processConfig();
     }
 
     writeValue(value: any) {  }
@@ -210,5 +221,21 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
     private _filterSelectedById(id: any, not = false) {
         return (not) ? this.selectedItems.filter(item => item.id !== id) :
                        this.selectedItems.filter(item => item.id === id);
+    }
+
+    private _processConfig() {
+        let opts = this.multiselectConfig;
+        if (opts != null) {
+
+            // disabledEmptyPlaceholder
+            if (opts.disabledEmptyPlaceholder != null) {
+                this.config.disabledEmptyPlaceholder = opts.disabledEmptyPlaceholder;
+            }
+
+            // noOptionsPlaceholder
+            if (opts.noOptionsPlaceholder != null) {
+                this.config.noOptionsPlaceholder = opts.noOptionsPlaceholder;
+            }
+        }
     }
 }

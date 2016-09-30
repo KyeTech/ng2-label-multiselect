@@ -1,2 +1,6 @@
-<label-multiselect [(ngModel)]="model" [multiselectItems]="items" [disabled]="disabled" (ngModelChange)="change($event)"></label-multiselect>
+<label-multiselect [(ngModel)]="model" [multiselectConfig]="config" [disabled]="disabled" (ngModelChange)="change($event)"></label-multiselect>
 <p>Some text underneath</p>
+
+<button (click)="disabled = !disabled">Toggle Disabled</button>
+
+<!-- [multiselectItems]="items" -->
