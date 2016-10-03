@@ -7,4 +7,6 @@ export interface ILabelMultiselectConfig {
     dropdownItemClasses?: string[];
     noOptionsClasses?: string[];
     labelClasses?: string[];
+    autoTag?: boolean;
+    tagSeparators?: string[];
 }

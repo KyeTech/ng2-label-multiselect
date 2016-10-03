@@ -13,13 +13,11 @@ export class AppComponent {
     noOptionsPlaceholder: 'No options text.',
     disabledEmptyPlaceholder: 'Disabled and empty!',
     inputClasses: ['rounded-right-side'],
-    labelClasses: ['abc']
+    labelClasses: ['abc'],
+    autoTag: false
   };
 
-  public model = [{
-    id: 1,
-    label: 'Testing'
-  }];
+  public model = [];
 
   public items = [
     {

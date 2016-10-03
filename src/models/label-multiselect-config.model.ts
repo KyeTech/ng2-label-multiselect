@@ -9,6 +9,8 @@ export class LabelMultiselectConfig implements ILabelMultiselectConfig {
     public dropdownItemClasses: string[];
     public noOptionsClasses: string[];
     public labelClasses: string[];
+    public autoTag: boolean;
+    public tagSeparators: string[];
 
     constructor() {
         this.disabledEmptyPlaceholder = '';
@@ -19,5 +21,7 @@ export class LabelMultiselectConfig implements ILabelMultiselectConfig {
         this.noOptionsClasses = [];
         this.minHeight = 34;
         this.labelClasses = [];
+        this.autoTag = false;
+        this.tagSeparators = [','];
     }
 }
