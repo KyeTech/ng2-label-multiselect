@@ -17,7 +17,7 @@ import { LabelMultiselectConfig } from '../models';
                                 {{opt.label}}
                             </li>
                             <li class="label-multiselect-search">
-                                <span #searchField contenteditable="true" class="label-multiselect-search-field" type="text" (keyup)="searchFieldChange($event)" (keydown)="searchFieldKeydown($event)"></span>
+                                <span #searchField contenteditable="true" class="label-multiselect-search-field" type="text" (keyup)="searchFieldChange($event)" (keydown)="searchFieldKeydown($event)" (blur)="onTouched()"></span>
                             </li>
                         </ul>
                     </div>
@@ -117,40 +117,39 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
 
     public cd: NgModel;
 
-    public showDropdown: boolean;
-
-    public selectedItems: ILabelItem[];
+    public config: LabelMultiselectConfig;
 
     public filterText: string;
 
-    @Input() multiselectConfig: ILabelMultiselectConfig;
+    public selectedItems: ILabelItem[];
 
-    @Input() disabled: boolean;
-
-    @Input() multiselectItems: IDropdownItem[];
-
-    @ViewChildren('searchField') searchField;
-
-    get filteredMultiselectItems() {
-        if (this.filterText.length === 0) {
-            return this.multiselectItems;
-        }
-
-        let filtered = this.multiselectItems.filter(item => item.label.toLowerCase().indexOf(this.filterText.toLowerCase()) !== -1);
-        return filtered;
-    }
+    public showDropdown: boolean;
 
     public onChange: any = Function.prototype;
 
     public onTouched: any = Function.prototype;
 
+    // ---------------------------------------------------------------------------------------------------------------------------------
+
     private labelItems: ILabelItem[];
 
     private toggleClasses: string[];
 
-    public config: LabelMultiselectConfig;
-
     private autoTagNumber: number;
+
+    // ---------------------------------------------------------------------------------------------------------------------------------
+
+    @Input() disabled: boolean;
+
+    @Input() multiselectConfig: ILabelMultiselectConfig;
+
+    @Input() multiselectItems: IDropdownItem[];
+
+    // ---------------------------------------------------------------------------------------------------------------------------------
+
+    @ViewChildren('searchField') searchField;
+
+    // ---------------------------------------------------------------------------------------------------------------------------------
 
     constructor(@Self() cd: NgModel, private _elemRef: ElementRef) {
         this.cd = cd;
@@ -172,6 +171,19 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
         this.toggleClasses = ['label-multiselect-container', 'label-multiselect-selection'];
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------
+
+    get filteredMultiselectItems() {
+        if (this.filterText.length === 0) {
+            return this.multiselectItems;
+        }
+
+        let filtered = this.multiselectItems.filter(item => item.label.toLowerCase().indexOf(this.filterText.toLowerCase()) !== -1);
+        return filtered;
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------
+
     ngOnInit() {
         this.selectedItems = this.cd.viewModel;
         this._processConfig();
@@ -187,10 +199,43 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
         this.onTouched = fn;
     }
 
-    public documentClick(event: MouseEvent) {
-        if (!this._elemRef.nativeElement.contains(event.target)) {
-            this.showDropdown = false;
-        }
+    // ---------------------------------------------------------------------------------------------------------------------------------
+
+    public add(item: IDropdownItem) {
+        if (this._filterSelectedById(item.id).length > 0 || this.disabled) return;
+
+        this.selectedItems.push({
+            id: item.id,
+            label: item.label
+        });
+
+        this._updateModel();
+    }
+
+    public createAutoTag() {
+        let val = this.filterText;
+        let seps = this.config.tagSeparators;
+
+        seps.forEach((sep) => {
+            if (val.indexOf(sep) !== -1) {
+                let valArr = val.split(sep);
+                if (valArr.length > 0) {
+                    valArr.forEach((v) => {
+                        if (v.length > 0) {
+                            this.selectedItems.push({
+                                id: this.autoTagNumber--,
+                                label: v.trim()
+                            });
+
+                            this._updateModel();
+                        }
+                    });
+
+                    this.filterText = '';
+                    this.searchField.first.nativeElement.textContent = '';
+                }
+            }
+        });
     }
 
     public containerClick(event) {
@@ -209,31 +254,10 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
         }
     }
 
-    public createAutoTag() {
-        let val = this.filterText;
-        let seps = this.config.tagSeparators;
-
-        seps.forEach((sep) => {
-            if (val.indexOf(sep) !== -1) {
-                let valArr = val.split(sep);
-                if (valArr.length > 0) {
-                    valArr.forEach((v) => {
-                        if (v.length > 0) {
-                            this.selectedItems.push({
-                                id: this.autoTagNumber--,
-                                label: v.trim()
-                            });
-
-                            this.cd.viewToModelUpdate(this.selectedItems);
-                        }
-                    });
-
-                    this.filterText = '';
-                    this.searchField.first.nativeElement.textContent = '';
-                }
-            }
-        });
-
+    public documentClick(event: MouseEvent) {
+        if (!this._elemRef.nativeElement.contains(event.target)) {
+            this.showDropdown = false;
+        }
     }
 
     public remove(item: ILabelItem) {
@@ -242,22 +266,7 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
         let filtered = this._filterSelectedById(item.id, true);
 
         this.selectedItems = filtered;
-        this.cd.viewToModelUpdate(this.selectedItems);
-    }
-
-    public add(item: IDropdownItem) {
-        if (this._filterSelectedById(item.id).length > 0 || this.disabled) return;
-
-        this.selectedItems.push({
-            id: item.id,
-            label: item.label
-        });
-
-        this.cd.viewToModelUpdate(this.selectedItems);
-    }
-
-    public searchFieldKeydown(evt) {
-        if (evt.keyCode === 8 && this.filterText.length === 0) { this._removeLastItem(); }
+        this._updateModel();
     }
 
     public searchFieldChange(evt) {
@@ -268,15 +277,15 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
         if (this.config.autoTag) { this.createAutoTag(); }
     }
 
+    public searchFieldKeydown(evt) {
+        if (evt.keyCode === 8 && this.filterText.length === 0) { this._removeLastItem(); }
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------
+
     private _filterSelectedById(id: any, not = false) {
         return (not) ? this.selectedItems.filter(item => item.id !== id) :
                        this.selectedItems.filter(item => item.id === id);
-    }
-
-    private _removeLastItem() {
-        this.selectedItems.pop();
-
-        this.cd.viewToModelUpdate(this.selectedItems);
     }
 
     private _processConfig() {
@@ -333,5 +342,16 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
                 this.config.tagSeparators = opts.tagSeparators;
             }
         }
+    }
+
+    private _removeLastItem() {
+        this.selectedItems.pop();
+
+        this._updateModel();
+    }
+
+    private _updateModel() {
+        this.cd.viewModel = this.selectedItems;
+        this.onChange(this.selectedItems);
     }
 }
