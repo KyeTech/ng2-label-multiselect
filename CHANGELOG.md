@@ -1,5 +1,5 @@
 <a name="0.1.5"></a>
-# [0.1.4](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.4...v0.1.5) (2016-10-05)
+# [0.1.5](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.4...v0.1.5) (2016-10-05)
 
 ### New
 
