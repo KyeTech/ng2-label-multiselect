@@ -1,3 +1,9 @@
+<a name="0.1.8"></a>
+# [0.1.8](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.7...v0.1.8) (2016-10-25)
+
+### Bugfixes
+* Fixed error with getter null reference.
+
 <a name="0.1.7"></a>
 # [0.1.7](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.6...v0.1.7) (2016-10-25)
 

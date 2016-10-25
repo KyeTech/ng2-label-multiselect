@@ -190,6 +190,7 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
     }
 
     get searchFieldValue(): string {
+        if (this.searchField.first == null) return '';
         return this.searchField.first.nativeElement.textContent;
     }
 
@@ -228,7 +229,7 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
     }
 
     public createAutoTag() {
-        let val = this.filterText;
+        let val = this.filterText.trim();
         let seps = this.config.tagSeparators;
 
         seps.forEach((sep) => {
