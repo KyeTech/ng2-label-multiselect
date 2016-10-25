@@ -1,3 +1,9 @@
+<a name="0.1.7"></a>
+# [0.1.7](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.6...v0.1.7) (2016-10-25)
+
+### Bugfixes
+* Removed search field when control is disabled to prevent text entry.
+
 <a name="0.1.6"></a>
 # [0.1.6](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.5...v0.1.6) (2016-10-25)
 

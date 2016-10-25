@@ -6,7 +6,7 @@ import { LabelMultiselectConfig } from '../models';
 
 @Component({
     selector: 'label-multiselect[ngModel]',
-    template: ` <div class="label-multiselect-outer-container" [ngClass]="{ 'label-multiselect-disabled' : this.disabled }">
+    template: ` <div class="label-multiselect-outer-container" [ngClass]="{ 'label-multiselect-disabled' : disabled }">
                     <div class="label-multiselect-container" [style.min-height]="config.minHeight + 'px'" (click)="containerClick($event)" [ngClass]="config.inputClasses">
                         <ul class="label-multiselect-selection">
                             <li *ngIf="disabled && selectedItems.length === 0" class="label-multiselect-disabled-placeholder" [ngClass]="config.disabledEmptyClasses">
@@ -17,7 +17,14 @@ import { LabelMultiselectConfig } from '../models';
                                 {{opt.label}}
                             </li>
                             <li class="label-multiselect-search">
-                                <span #searchField contenteditable="true" class="label-multiselect-search-field" type="text" (keyup)="searchFieldChange($event)" (keydown)="searchFieldKeydown($event)" (blur)="onTouched()"></span>
+                                <span #searchField contenteditable="true"
+                                    class="label-multiselect-search-field"
+                                    type="text"
+                                    *ngIf="!disabled"
+                                    (keyup)="searchFieldChange($event)"
+                                    (keydown)="searchFieldKeydown($event)"
+                                    (blur)="onTouched()">
+                                </span>
                             </li>
                         </ul>
                     </div>
