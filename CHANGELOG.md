@@ -1,3 +1,11 @@
+<a name="0.1.6"></a>
+# [0.1.6](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.5...v0.1.6) (2016-10-25)
+
+### New
+
+* Added getter and setter for searchFieldValue
+* In autotag mode if a string has been entered in to the text field, clicking away from the control will create a tag with the string value left in the text field, as a trailing comma to create the tag may not be added.
+
 <a name="0.1.5"></a>
 # [0.1.5](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.4...v0.1.5) (2016-10-05)
 

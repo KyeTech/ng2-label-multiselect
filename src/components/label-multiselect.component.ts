@@ -182,6 +182,14 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
         return filtered;
     }
 
+    get searchFieldValue(): string {
+        return this.searchField.first.nativeElement.textContent;
+    }
+
+    set searchFieldValue(val) {
+        this.searchField.first.nativeElement.textContent = val;
+    }
+
     // ---------------------------------------------------------------------------------------------------------------------------------
 
     ngOnInit() {
@@ -232,7 +240,7 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
                     });
 
                     this.filterText = '';
-                    this.searchField.first.nativeElement.textContent = '';
+                    this.searchFieldValue = '';
                 }
             }
         });
@@ -257,6 +265,12 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
     public documentClick(event: MouseEvent) {
         if (!this._elemRef.nativeElement.contains(event.target)) {
             this.showDropdown = false;
+
+            if (this.config.autoTag && this.searchFieldValue.trim() !== '') {
+                let firstSep = this.config.tagSeparators[0];
+                this.searchFieldValue += firstSep;
+                this.searchFieldChange(null);
+            }
         }
     }
 
@@ -272,7 +286,7 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
     public searchFieldChange(evt) {
         if (this.disabled) return;
 
-        this.filterText = this.searchField.first.nativeElement.textContent;
+        this.filterText = this.searchFieldValue;
 
         if (this.config.autoTag) { this.createAutoTag(); }
     }
