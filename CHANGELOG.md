@@ -1,5 +1,12 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.9...v1.0.0) (2016-12-02)
+
+### Notes
+
+* Bumped to `1.0.0` as this library is now being used in production environments.
+
 <a name="0.1.9"></a>
-# [0.1.9](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.8...v0.1.9)
+# [0.1.9](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.8...v0.1.9) (2016-12-02)
 
 ### Bugfixes
 * Fixed [#3](https://github.com/AndyMeps/ng2-label-multiselect/issues/3), Added keydown keyCode for return to collapse dropdown.
