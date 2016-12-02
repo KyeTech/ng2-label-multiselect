@@ -12,9 +12,9 @@ import { LabelMultiselectConfig } from '../models';
                             <li *ngIf="disabled && selectedItems.length === 0" class="label-multiselect-disabled-placeholder" [ngClass]="config.disabledEmptyClasses">
                                 {{config.disabledEmptyPlaceholder}}
                             </li>
-                            <li *ngFor="let opt of selectedItems" class="label-multiselect-label" [ngClass]="config.labelClasses">
-                                <span class="label-multiselect-label-cross" (click)="remove(opt)">×</span>
-                                {{opt.label}}
+                            <li *ngFor="let label of selectedItems" class="label-multiselect-label" [ngClass]="config.labelClasses">
+                                <span class="label-multiselect-label-cross" (click)="remove(label)">×</span>
+                                {{label.label}}
                             </li>
                             <li class="label-multiselect-search">
                                 <span #searchField contenteditable="true"
@@ -29,8 +29,8 @@ import { LabelMultiselectConfig } from '../models';
                         </ul>
                     </div>
                     <ul class="label-multiselect-dropdown" [ngClass]="{ 'visible' : showDropdown && !disabled && !config.autoTag }">
-                        <li *ngFor="let opt of filteredMultiselectItems" (click)="add(opt)" class="label-multiselect-dropdown-option" [ngClass]="config.dropdownItemClasses">
-                            {{opt.label}}
+                        <li *ngFor="let item of filteredMultiselectItems" (click)="add(item)" class="label-multiselect-dropdown-option" [ngClass]="config.dropdownItemClasses">
+                            {{item.label}}
                         </li>
                         <li *ngIf="multiselectItems.length === 0" class="label-multiselect-no-options" [ngClass]="config.noOptionsClasses">{{config.noOptionsPlaceholder}}</li>
                     </ul>
@@ -300,7 +300,14 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
     }
 
     public searchFieldKeydown(evt) {
+        // Backspace
         if (evt.keyCode === 8 && this.filterText.length === 0) { this._removeLastItem(); }
+
+        // Return
+        if (evt.keyCode === 13) {
+            this.showDropdown = false;
+            return false;
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------------------------------------
