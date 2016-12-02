@@ -1,3 +1,12 @@
+<a name="0.1.9"></a>
+# [0.1.9](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.8...v0.1.9)
+
+### Bugfixes
+* Fixed [#3](https://github.com/AndyMeps/ng2-label-multiselect/issues/3), Added keydown keyCode for return to collapse dropdown.
+
+### Notes
+* Minor refactoring to enumeration objects.
+
 <a name="0.1.8"></a>
 # [0.1.8](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.7...v0.1.8) (2016-10-25)
 
@@ -17,15 +26,6 @@
 
 * Added getter and setter for searchFieldValue
 * In autotag mode if a string has been entered in to the text field, clicking away from the control will create a tag with the string value left in the text field, as a trailing comma to create the tag may not be added.
-
-<a name="0.1.5"></a>
-# [???](#)
-
-### Bugfixes
-* Fixed [#3](https://github.com/AndyMeps/ng2-label-multiselect/issues/3), Added keydown keyCode for return to collapse dropdown.
-
-### Notes
-* Minor refactoring to enumeration objects.
 
 # [0.1.5](https://github.com/andymeps/ng2-label-multiselect/compare/v0.1.4...v0.1.5) (2016-10-05)
 
