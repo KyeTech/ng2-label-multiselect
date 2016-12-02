@@ -1,6 +1,6 @@
 {
   "name": "ng2-label-multiselect",
-  "version": "0.1.9",
+  "version": "1.0.0",
   "description": "Label multiselect library for Angular 2",
   "main": "lib/index.js",
   "scripts": {
