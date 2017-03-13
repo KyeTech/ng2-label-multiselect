@@ -12,7 +12,7 @@ import { LabelMultiselectConfig } from '../models';
                             <li *ngIf="disabled && selectedItems.length === 0" class="label-multiselect-disabled-placeholder" [ngClass]="config.disabledEmptyClasses">
                                 {{config.disabledEmptyPlaceholder}}
                             </li>
-                            <li *ngFor="let label of selectedItems" class="label-multiselect-label" [ngClass]="config.labelClasses">
+                            <li *ngFor="let label of selectedItems" class="label-multiselect-label {{label.class}}" [ngClass]="config.labelClasses">
                                 <span class="label-multiselect-label-cross" (click)="remove(label)">×</span>
                                 {{label.label}}
                             </li>
@@ -222,7 +222,8 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
 
         this.selectedItems.push({
             id: item.id,
-            label: item.label
+            label: item.label,
+            class: item.class
         });
 
         this._updateModel();
@@ -240,7 +241,8 @@ export class LabelMultiselectComponent implements ControlValueAccessor, OnInit {
                         if (v.length > 0) {
                             this.selectedItems.push({
                                 id: this.autoTagNumber--,
-                                label: v.trim()
+                                label: v.trim(),
+                                class: ''
                             });
 
                             this._updateModel();
